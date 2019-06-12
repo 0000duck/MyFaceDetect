@@ -17,7 +17,6 @@ namespace MyFaceDetect
     class FaceDetect
     {
         private List<ImageInfo> images;
-
         //groupId -> name 快速查询
         private Dictionary<int, string> faceDic;
         private FaceRecognizer faceRecognizer;
@@ -32,7 +31,9 @@ namespace MyFaceDetect
             FaceDic = new Dictionary<int, string>();
             GetFaceRecognizer();
         }
-        //获得一个训练好的model
+        /// <summary>
+        /// 获得一个训练好的model
+        /// </summary>
         public void GetFaceRecognizer()
         {
             //获得已有的人脸信息库，信息存在images 和 faceDic中
@@ -52,7 +53,9 @@ namespace MyFaceDetect
             faceRecognizer.Train(Images.Select(x => x.Image),Images.Select(x => x.ImageGroupId));
             //faceRecognizer.Train(mats, labs);
         }
-        //获取已有的人脸信息
+        /// <summary>
+        /// 获取已有的人脸信息
+        /// </summary>
         public void GetImageInfos()
         {         
             int imageId;
@@ -75,7 +78,11 @@ namespace MyFaceDetect
             }
         }
 
-        //更新人脸信息库
+        /// <summary>
+        /// 更新人脸信息库
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="face"></param>
         public void UpdateImagesInfos(string name,Mat face)
         {
             //信息库存在这个人名
@@ -120,8 +127,13 @@ namespace MyFaceDetect
             }
             return false;
         }
-        //获得人脸(矩形框内的)头像,灰度化，均匀化
-        //参数是原始图片，从摄像头下抓取的
+        /// <summary>
+        /// 获得人脸(矩形框内的)头像,灰度化，均匀化
+        /// </summary>
+        /// <param name="srcImg">参数是原始图片，从摄像头下抓取的</param>
+        /// <param name="faces">人脸矩形框</param>
+        /// <returns>返回人脸信息</returns>
+        
         public List<Mat> GetFaces(Mat srcImg,Rect[] faces)
         {
             //Rect[] faces = GetFaceRects(srcImg);
@@ -137,7 +149,11 @@ namespace MyFaceDetect
             return dstFaces;
         }
 
-        //根据模型预测人脸,返回人脸所对应的人名  Predict()
+        /// <summary>
+        /// 根据模型预测人脸,返回人脸所对应的人名  Predict()
+        /// </summary>
+        /// <param name="curFaces">经灰度化，均匀化处理的人脸头像</param>
+        /// <returns></returns>
         public List<string> PredictFace(List<Mat> curFaces)
         {
             List<string> names = new List<string>();
@@ -152,8 +168,12 @@ namespace MyFaceDetect
             return names;
         }
 
-        //用于检测人脸，返回人脸矩形框
-        public  Rect[] GetFaceRects(Mat srcImage)
+        /// <summary>
+        /// 用于检测人脸，返回人脸矩形框
+        /// </summary>
+        /// <param name="srcImage">原始输入图像，摄像头采集的</param>
+        /// <returns>返回人脸矩形框</returns>
+        public Rect[] GetFaceRects(Mat srcImage)
         {
             Mat grayImage = new Mat();
             Cv2.CvtColor(srcImage, grayImage, ColorConversionCodes.BGR2GRAY);
@@ -172,7 +192,13 @@ namespace MyFaceDetect
             return faces;
         }
 
-        //将得到的矩形框和人名画出来
+        /// <summary>
+        /// 将得到的矩形框和人名画出来
+        /// </summary>
+        /// <param name="faces">人脸矩形框</param>
+        /// <param name="grab">原始的图像</param>
+        /// <param name="names">预测得到的人脸对应的名字</param>
+        /// <returns>可有可无</returns>
         public Bitmap ShowFaceRects(Rect[] faces,Bitmap grab,List<string> names)
         {
             Graphics g = Graphics.FromImage(grab);

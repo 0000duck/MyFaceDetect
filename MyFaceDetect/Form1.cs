@@ -42,10 +42,18 @@ namespace MyFaceDetect
         {
 
         }
+        /// <summary>
+        /// 用于全局检测异常
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             MessageBox.Show((e.ExceptionObject as Exception).ToString());
         }
+        /// <summary>
+        /// 该函数在picBox显示图像，本系统暂且没用到
+        /// </summary>
         private void grabFunc()
         {
             while (true)
