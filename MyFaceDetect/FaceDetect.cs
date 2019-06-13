@@ -24,12 +24,13 @@ namespace MyFaceDetect
         internal List<ImageInfo> Images { get => images; set => images = value; }
         public Dictionary<int, string> FaceDic { get => faceDic; set => faceDic = value; }
         public FaceRecognizer FaceRecognizer { get => faceRecognizer; set => faceRecognizer = value; }
-
+        
         public FaceDetect()
         {
             Images = new List<ImageInfo>();
             FaceDic = new Dictionary<int, string>();
             GetFaceRecognizer();
+            
         }
         /// <summary>
         /// 获得一个训练好的model
@@ -98,6 +99,13 @@ namespace MyFaceDetect
                 if (count < 3)
                 {
                     face.SaveImage(dir + "\\" + count + ".png");
+                    images.Add(new ImageInfo
+                    {
+                        Image = face,
+                        ImageGroupId = groupId,
+                        ImageId = count,
+
+                    });
                 }
                 else
                 {
@@ -105,15 +113,22 @@ namespace MyFaceDetect
                     return;
                 }
             }
-            //不存在，则加入该人脸
+            //不存在，则加入该人脸,并更新images中的数据和faceDic
             else
             {
                 string path = "..\\..\\Images\\";
                 string[] list = System.IO.Directory.GetDirectories(path);
-                int count = list.Length;
-                Directory.CreateDirectory(path+count+"_"+name);
-                face.SaveImage(path + count + "_" + name+"\\"+0+".png");
-                faceDic.Add(count,name);
+                int dirLen = list.Length;
+                Directory.CreateDirectory(path+ dirLen + "_"+name);
+                face.SaveImage(path + dirLen + "_" + name+"\\"+0+".png");
+                faceDic.Add(dirLen, name);
+                images.Add(new ImageInfo
+                {
+                    Image = face,
+                    ImageGroupId = dirLen,
+                    ImageId = 0,
+
+                });
             }
             MessageBox.Show("更新成功");
         }

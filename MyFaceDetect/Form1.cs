@@ -103,7 +103,7 @@ namespace MyFaceDetect
 
         private void train_button_Click(object sender, EventArgs e)
         {
-            faceDetect.GetFaceRecognizer();
+            faceDetect.FaceRecognizer.Train(faceDetect.Images.Select(x => x.Image), faceDetect.Images.Select(x => x.ImageGroupId));
         }
 
         /// <summary>
